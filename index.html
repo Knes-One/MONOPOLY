@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Майнкрафт Монополия - Презентация</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">МАЙНКРАФТ <span>МОНОПОЛИЯ</span></div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about">Об игре</a></li>
+        <li><a href="#mechanics">События</a></li>
+        <li><a href="#rules">Правила</a></li>
+        <li><a href="#team">Команда</a></li>
+      </ul>
+      <button class="fs-btn" id="fsBtn" title="На весь экран" aria-label="На весь экран">
+        <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="hero-cubes">
+    <div class="cube"></div><div class="cube"></div><div class="cube"></div>
+    <div class="cube"></div><div class="cube"></div><div class="cube"></div>
+  </div>
+  <h1>МАЙНКРАФТ<br><span class="gold">МОНО</span><span class="green">ПОЛИЯ</span></h1>
+  <p class="tagline">Настольная игра-бродилка в мире кубов</p>
+  <p class="lead">
+    Бросай кубик, иди по полю и остерегайся монстров.
+    Дойди до финиша первым, но помни - Крипер ждёт.
+  </p>
+  <div class="cta-row">
+    <a href="#about" class="btn">Об игре</a>
+    <a href="#rules" class="btn btn-red">Правила</a>
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="stats">
+    <div class="stat"><div class="num">2-4</div><div class="lbl">Игрока</div></div>
+    <div class="stat"><div class="num">30-50</div><div class="lbl">Минут партия</div></div>
+    <div class="stat"><div class="num">6+</div><div class="lbl">Возраст</div></div>
+    <div class="stat"><div class="num">28</div><div class="lbl">Клеток поля</div></div>
+    <div class="stat"><div class="num">5</div><div class="lbl">Видов событий</div></div>
+  </div>
+</section>
+
+<section id="about">
+  <h2 class="section-title">Об игре</h2>
+  <p class="section-sub">Простая и весёлая бродилка</p>
+
+  <div class="about">
+    <div class="card">
+      <p>
+        <span class="hl">Майнкрафт Монополия</span> - настольная игра для всей семьи.
+        Игроки бросают кубик и ходят фишками по игровому полю, как в классической
+        ходилке-бродилке.
+      </p>
+      <p>
+        По пути встречаются <span class="hl-red">опасные монстры</span> -
+        Крипер, Зомби и Скелет. Они отбрасывают игрока назад.
+        А ещё есть <span class="hl-cyan">добрые события</span> - Лошадь и Деревня,
+        которые помогают двигаться вперёд.
+      </p>
+      <p>
+        Побеждает тот, кто первым дойдёт до финиша.
+      </p>
+    </div>
+
+    <div class="about-visual">
+      <div class="big-icon">🎲</div>
+      <div class="title">ПРОСТЫЕ<br>ПРАВИЛА</div>
+      <div class="text">Для детей и взрослых. Играется за 30 минут.</div>
+    </div>
+  </div>
+</section>
+
+<section id="mechanics">
+  <h2 class="section-title">События на поле</h2>
+  <p class="section-sub">Что можно встретить по пути</p>
+
+  <div class="mechanics">
+    <div class="mech creeper">
+      <span class="icon">💣</span>
+      <h3>Крипер</h3>
+      <p>Самое опасное событие. Взрыв - и ты сразу возвращаешься на старт.</p>
+    </div>
+    <div class="mech zombie">
+      <span class="icon">🧟</span>
+      <h3>Зомби</h3>
+      <p>Хватает за ногу - отступаешь на 3 клетки назад.</p>
+    </div>
+    <div class="mech skeleton">
+      <span class="icon">💀</span>
+      <h3>Скелет</h3>
+      <p>Стреляет из лука - отпрыгиваешь на 2 клетки назад.</p>
+    </div>
+    <div class="mech horse">
+      <span class="icon">🐴</span>
+      <h3>Лошадь</h3>
+      <p>Садишься верхом и скачешь вперёд на 2 клетки.</p>
+    </div>
+    <div class="mech village">
+      <span class="icon">🏘️</span>
+      <h3>Деревня</h3>
+      <p>Чекпоинт - безопасное место. Если проиграешь, вернёшься сюда, а не на старт.</p>
+    </div>
+  </div>
+</section>
+
+<section id="rules">
+  <h2 class="section-title">Правила игры</h2>
+  <p class="section-sub">Как играть</p>
+
+  <div class="rules-block">
+    <p class="rules-intro">
+      <strong>Цель игры</strong> - первым дойти до финиша.
+      Играют 2-4 человека. Каждый берёт себе фишку персонажа
+      и ставит её на клетку «Старт».
+    </p>
+
+    <div class="rules-grid">
+      <div class="rule-box">
+        <h4>■ Ход игрока</h4>
+        <p>
+          В свой ход игрок бросает кубик и передвигает фишку вперёд
+          на выпавшее число клеток. Затем выполняет действие клетки,
+          на которую попал. Ход переходит по кругу.
+        </p>
+      </div>
+
+      <div class="rule-box">
+        <h4>■ Опасные клетки</h4>
+        <p>Монстры отбрасывают игрока назад:</p>
+        <div class="events-mini">
+          <div class="event-mini bad">
+            <span class="emoji">💣</span>
+            <div class="txt"><strong>Крипер</strong>На старт</div>
+          </div>
+          <div class="event-mini bad">
+            <span class="emoji">🧟</span>
+            <div class="txt"><strong>Зомби</strong>-3 клетки</div>
+          </div>
+          <div class="event-mini bad">
+            <span class="emoji">💀</span>
+            <div class="txt"><strong>Скелет</strong>-2 клетки</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-box">
+        <h4>■ Добрые клетки</h4>
+        <p>Помогают двигаться вперёд:</p>
+        <div class="events-mini">
+          <div class="event-mini good">
+            <span class="emoji">🐴</span>
+            <div class="txt"><strong>Лошадь</strong>+2 клетки</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-box">
+        <h4>■ Чекпоинт - Деревня</h4>
+        <p>
+          Деревня - безопасное место. Дошёл до неё - запомнил как чекпоинт.
+          Если Крипер отбросит, вернёшься в последнюю деревню,
+          а не на старт.
+        </p>
+      </div>
+
+      <div class="rule-box">
+        <h4>■ Конец игры</h4>
+        <p>
+          Игра заканчивается, когда один из игроков доходит до финиша.
+          Он и становится победителем. Хотите дольше - договоритесь
+          пройти поле несколько раз, с каждым кругом монстров больше.
+        </p>
+      </div>
+
+      <div class="rule-box">
+        <h4>■ Совет</h4>
+        <p>
+          Не спешите вперёд бездумно. Иногда лучше отстать на пару клеток,
+          но не попасть на Крипера. И держитесь ближе к деревням -
+          они спасут вас от взрыва.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <h2 class="section-title">Команда проекта</h2>
+  <p class="section-sub">Разработчики</p>
+
+  <div class="team">
+    <div class="member a">
+      <div class="avatar">🎨</div>
+      <div class="name">ДЯЧУК<br>АЛЕКСАНДР</div>
+      <div class="role">Разработчик проекта</div>
+    </div>
+    <div class="member b">
+      <div class="avatar">🖌️</div>
+      <div class="name">КУЗЬМЕНКО<br>НИКИТА</div>
+      <div class="role">Разработчик проекта</div>
+    </div>
+    <div class="member c">
+      <div class="avatar">⚙️</div>
+      <div class="name">ДОТОВИЧ<br>ВИКТОР</div>
+      <div class="role">Разработчик проекта</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">МАЙНКРАФТ <span>МОНОПОЛИЯ</span></div>
+  <p>Настольная игра-бродилка в мире кубов</p>
+  <p class="authors">Дячук Александр · Кузьменко Никита · Дотович Виктор</p>
+  <p style="margin-top:24px;font-size:.8rem;color:#555;">© 2026 · Сделано с <span class="heart">❤</span> для защиты проекта</p>
+</footer>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>
