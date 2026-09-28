@@ -7,7 +7,559 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --grass:#5b9c3a;
+  --grass-dark:#3d6b26;
+  --dirt:#8b5a2b;
+  --dirt-dark:#5c3a1a;
+  --diamond:#4aedd9;
+  --diamond-dark:#1a8a7a;
+  --gold:#ffd700;
+  --gold-dark:#b8860b;
+  --redstone:#ff3b3b;
+  --redstone-dark:#8b0000;
+  --creeper:#4caf50;
+  --creeper-dark:#2e7d32;
+  --zombie:#5a8a5a;
+  --zombie-dark:#2a4a2a;
+  --skeleton:#e8e8e8;
+  --skeleton-dark:#888;
+  --nether:#8b1a1a;
+  --nether-dark:#3a0505;
+  --end:#6a3d9a;
+  --end-dark:#2a1040;
+  --bg:#0d1117;
+  --panel:#161b22;
+  --text:#e6edf3;
+  --muted:#8b949e;
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Rubik',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+}
+
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%,rgba(91,156,58,.15),transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% 20%,rgba(74,237,217,.08),transparent 60%),
+    radial-gradient(ellipse 90% 70% at 50% 100%,rgba(255,215,0,.06),transparent 60%),
+    linear-gradient(180deg,#0d1117 0%,#0a0e14 100%);
+  z-index:-2;pointer-events:none;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:48px 48px;
+  z-index:-1;pointer-events:none;
+  -webkit-mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,#000 40%,transparent 100%);
+  mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,#000 40%,transparent 100%);
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(13,17,23,.85);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  padding:14px 32px;
+}
+.nav-inner{max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:24px}
+.nav-logo{
+  font-family:'Press Start 2P',monospace;font-size:.72rem;
+  color:var(--gold);letter-spacing:1px;white-space:nowrap;
+}
+.nav-logo span{color:var(--creeper)}
+.nav-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.nav-links{display:flex;gap:4px;list-style:none;flex-wrap:wrap}
+.nav-links a{
+  color:var(--muted);text-decoration:none;font-size:.85rem;
+  font-weight:500;padding:8px 14px;border-radius:6px;transition:all .2s;
+}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+
+.fs-btn{
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;color:var(--text);cursor:pointer;transition:all .2s;flex-shrink:0;
+}
+.fs-btn:hover{background:rgba(255,215,0,.15);border-color:rgba(255,215,0,.5);color:var(--gold);transform:translateY(-1px)}
+.fs-btn svg{width:18px;height:18px;fill:currentColor}
+
+section{padding:110px 32px 70px;max-width:1300px;margin:0 auto;scroll-margin-top:70px}
+.section-title{
+  font-family:'Press Start 2P',monospace;
+  font-size:clamp(1rem,2.2vw,1.5rem);
+  color:var(--gold);text-align:center;margin-bottom:14px;
+  letter-spacing:2px;line-height:1.5;text-shadow:3px 3px 0 rgba(0,0,0,.5);
+}
+.section-sub{
+  text-align:center;color:var(--muted);font-size:.95rem;
+  margin-bottom:56px;letter-spacing:1px;text-transform:uppercase;font-weight:500;
+}
+.card{
+  background:var(--panel);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:28px;
+  transition:transform .25s,border-color .25s,box-shadow .25s;
+}
+.card:hover{transform:translateY(-4px);border-color:rgba(255,215,0,.35);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+
+.ic{
+  width:44px;height:44px;
+  display:inline-block;
+  position:relative;
+  flex-shrink:0;
+  border-radius:8px;
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.25),inset 3px 3px 0 rgba(255,255,255,.15);
+}
+
+.ic-creeper{background:linear-gradient(135deg,#5ccf5c,var(--creeper-dark));border:2px solid #000}
+.ic-creeper::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(#000,#000) 22% 35%/9px 9px no-repeat,
+    linear-gradient(#000,#000) 60% 35%/9px 9px no-repeat,
+    linear-gradient(#000,#000) 30% 62%/18px 5px no-repeat,
+    linear-gradient(#000,#000) 42% 74%/9px 9px no-repeat;
+}
+
+.ic-zombie{background:linear-gradient(135deg,#7ab87a,var(--zombie-dark));border:2px solid #000}
+.ic-zombie::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(#1a2a1a,#1a2a1a) 22% 35%/9px 6px no-repeat,
+    linear-gradient(#1a2a1a,#1a2a1a) 60% 35%/9px 6px no-repeat,
+    linear-gradient(#1a2a1a,#1a2a1a) 25% 65%/20px 4px no-repeat;
+}
+
+.ic-skeleton{background:linear-gradient(135deg,#fff,var(--skeleton-dark));border:2px solid #000}
+.ic-skeleton::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 30% 38%,#000 0 4px,transparent 4.5px),
+    radial-gradient(circle at 70% 38%,#000 0 4px,transparent 4.5px),
+    linear-gradient(#000,#000) 50% 62%/4px 12px no-repeat;
+}
+
+.ic-village{background:linear-gradient(180deg,#a06a3a,#5c3a1a);border:2px solid #000}
+.ic-village::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(135deg,transparent 50%,#7a4a2a 50%) top left/50% 50% no-repeat,
+    linear-gradient(225deg,transparent 50%,#7a4a2a 50%) top right/50% 50% no-repeat,
+    linear-gradient(#000,#000) 30% 60%/6px 8px no-repeat,
+    linear-gradient(#000,#000) 60% 60%/6px 8px no-repeat;
+}
+
+.ic-grass{background:linear-gradient(180deg,var(--grass) 0 28%,var(--dirt) 28% 100%);border:2px solid #000}
+.ic-grass::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(var(--grass-dark),var(--grass-dark)) 0 28%/100% 3px no-repeat,
+    radial-gradient(circle at 30% 65%,rgba(0,0,0,.25) 0 2px,transparent 2px),
+    radial-gradient(circle at 70% 80%,rgba(0,0,0,.25) 0 2px,transparent 2px);
+}
+
+.ic-stone{background:linear-gradient(135deg,#9a9a9a,#3a3a3a);border:2px solid #000}
+.ic-stone::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 30% 35%,rgba(0,0,0,.4) 0 3px,transparent 3px),
+    radial-gradient(circle at 70% 60%,rgba(0,0,0,.4) 0 3px,transparent 3px),
+    radial-gradient(circle at 45% 80%,rgba(0,0,0,.4) 0 2px,transparent 2px);
+}
+
+/* АЛМАЗНЫЙ БЛОК - простой пиксельный куб, как в Minecraft */
+.ic-diamond{
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 40%),
+    linear-gradient(180deg,#7ff5e5 0%,#4aedd9 45%,#2bbfb0 100%);
+  border:2px solid #0d4a44;
+  border-radius:6px;
+  box-shadow:
+    inset -4px -4px 0 rgba(0,0,0,.22),
+    inset 4px 4px 0 rgba(255,255,255,.35),
+    0 4px 12px rgba(74,237,217,.35);
+}
+.ic-diamond::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.15)) 0 50%/100% 2px no-repeat,
+    linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.15)) 50% 0/2px 100% no-repeat,
+    linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.5)) 20% 20%/8px 8px no-repeat;
+}
+.ic-diamond::after{
+  content:'';position:absolute;
+  inset:5px;
+  border:1px solid rgba(255,255,255,.4);
+  border-radius:3px;
+  box-shadow:inset -2px -2px 0 rgba(0,0,0,.15);
+}
+
+.ic-gold{
+  background:linear-gradient(135deg,#fff0a0,var(--gold) 45%,var(--gold-dark));
+  border:2px solid #000;
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.2),inset 3px 3px 0 rgba(255,255,255,.5);
+}
+.ic-gold::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.7) 0 4px,transparent 5px);
+}
+
+.ic-redstone{
+  background:radial-gradient(circle at 35% 35%,#ff9090,var(--redstone) 55%,var(--redstone-dark));
+  border:2px solid #000;
+  border-radius:50%;
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.3),0 0 12px rgba(255,59,59,.4);
+}
+
+.ic-nether{
+  background:radial-gradient(circle at 50% 70%,#ff6b2c,var(--nether) 60%,var(--nether-dark));
+  border:2px solid #000;
+}
+.ic-nether::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(#ffb84a,#ffb84a) 25% 60%/4px 10px no-repeat,
+    linear-gradient(#ffb84a,#ffb84a) 55% 55%/4px 14px no-repeat,
+    linear-gradient(#ffb84a,#ffb84a) 75% 65%/4px 8px no-repeat;
+}
+
+.ic-end{
+  background:radial-gradient(circle at 50% 50%,#b591e8,var(--end) 55%,var(--end-dark));
+  border:2px solid #000;
+}
+.ic-end::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 30% 30%,#fff 0 1.5px,transparent 2px),
+    radial-gradient(circle at 65% 25%,#fff 0 1px,transparent 1.5px),
+    radial-gradient(circle at 75% 55%,#fff 0 1.5px,transparent 2px),
+    radial-gradient(circle at 25% 70%,#fff 0 1px,transparent 1.5px),
+    radial-gradient(circle at 55% 80%,#fff 0 1.5px,transparent 2px);
+}
+
+.ic-mono{
+  background:linear-gradient(135deg,#ffe680,var(--gold-dark));
+  border:2px solid #000;
+}
+.ic-mono::before{
+  content:'';position:absolute;inset:7px 6px;
+  background:
+    linear-gradient(#000,#000) 0 0/100% 2px no-repeat,
+    linear-gradient(#000,#000) 0 5px/100% 2px no-repeat,
+    linear-gradient(#000,#000) 0 10px/100% 2px no-repeat,
+    linear-gradient(#000,#000) 0 15px/100% 2px no-repeat;
+  opacity:.55;
+}
+
+.ic-minecraft{
+  background:linear-gradient(180deg,var(--grass) 0 50%,var(--dirt) 50% 100%);
+  border:2px solid #000;
+}
+.ic-minecraft::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(var(--grass-dark),var(--grass-dark)) 0 50%/100% 3px no-repeat,
+    radial-gradient(circle at 30% 75%,rgba(0,0,0,.3) 0 2px,transparent 2px),
+    radial-gradient(circle at 65% 80%,rgba(0,0,0,.3) 0 2px,transparent 2px);
+}
+
+.ic-board{
+  background:linear-gradient(135deg,#2a5a8a,#0d2a4a);
+  border:2px solid #000;
+}
+.ic-board::before{
+  content:'';position:absolute;
+  inset:5px;
+  border:2px solid rgba(255,255,255,.5);
+  border-radius:2px;
+}
+.ic-board::after{
+  content:'';position:absolute;
+  inset:0;
+  background:
+    linear-gradient(#fff,#fff) 0 0/7px 7px no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 100% 0/7px 7px no-repeat,
+    linear-gradient(var(--redstone),var(--redstone)) 0 100%/7px 7px no-repeat,
+    linear-gradient(var(--diamond),var(--diamond)) 100% 100%/7px 7px no-repeat;
+}
+
+.ic-pixel{background:#1a1a1a;border:2px solid #000}
+.ic-pixel::before{
+  content:'';position:absolute;inset:6px;
+  background:
+    linear-gradient(var(--grass),var(--grass)) 0 0/50% 50% no-repeat,
+    linear-gradient(var(--redstone),var(--redstone)) 100% 0/50% 50% no-repeat,
+    linear-gradient(var(--diamond),var(--diamond)) 0 100%/50% 50% no-repeat,
+    linear-gradient(var(--gold),var(--gold)) 100% 100%/50% 50% no-repeat;
+}
+
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;text-align:center;padding-top:100px;
+}
+.hero-cubes{display:flex;gap:14px;margin-bottom:40px;flex-wrap:wrap;justify-content:center}
+.cube{
+  width:46px;height:46px;border-radius:8px;border:2px solid rgba(0,0,0,.5);
+  box-shadow:inset -4px -4px 0 rgba(0,0,0,.35),inset 4px 4px 0 rgba(255,255,255,.25),0 8px 20px rgba(0,0,0,.4);
+  animation:bounce 3s ease-in-out infinite;
+}
+.cube:nth-child(1){background:var(--grass);animation-delay:0s}
+.cube:nth-child(2){background:var(--dirt);animation-delay:.15s}
+.cube:nth-child(3){background:var(--diamond);animation-delay:.3s}
+.cube:nth-child(4){background:var(--gold);animation-delay:.45s}
+.cube:nth-child(5){background:var(--creeper);animation-delay:.6s}
+.cube:nth-child(6){background:var(--redstone);animation-delay:.75s}
+@keyframes bounce{
+  0%,100%{transform:translateY(0) rotate(0)}
+  50%{transform:translateY(-16px) rotate(8deg)}
+}
+#hero h1{
+  font-family:'Press Start 2P',monospace;
+  font-size:clamp(1.2rem,4.2vw,2.6rem);
+  line-height:1.5;margin-bottom:28px;letter-spacing:2px;color:#fff;
+  text-shadow:3px 3px 0 #000,6px 6px 0 var(--grass-dark);
+}
+#hero h1 .gold{color:var(--gold)}
+#hero h1 .green{color:var(--creeper)}
+#hero .tagline{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--diamond);margin-bottom:24px;font-weight:500}
+#hero .lead{max-width:720px;font-size:1.05rem;color:#b8c1cc;margin-bottom:44px;line-height:1.8}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.btn{
+  display:inline-block;padding:14px 28px;
+  font-family:'Rubik',sans-serif;font-weight:700;font-size:.95rem;
+  text-decoration:none;color:#fff;background:var(--grass);border-radius:10px;
+  border:2px solid #000;box-shadow:0 4px 0 #000,0 8px 20px rgba(0,0,0,.35);
+  transition:all .15s;cursor:pointer;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #000,0 12px 24px rgba(0,0,0,.4)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 #000}
+.btn-red{background:var(--redstone)}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:18px;margin-top:-40px}
+.stat{
+  background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:12px;
+  padding:26px 18px;text-align:center;transition:all .25s;
+}
+.stat:hover{border-color:rgba(255,215,0,.4);transform:translateY(-3px)}
+.stat .num{
+  font-family:'Press Start 2P',monospace;font-size:1.2rem;color:var(--gold);
+  margin-bottom:10px;text-shadow:2px 2px 0 rgba(0,0,0,.5);
+}
+.stat .lbl{font-size:.85rem;color:var(--muted)}
+
+.about{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch}
+@media(max-width:900px){.about{grid-template-columns:1fr}}
+.about p{font-size:1rem;color:#b8c1cc;line-height:1.85;margin-bottom:18px}
+.about p:last-child{margin-bottom:0}
+.about .hl{color:var(--gold);font-weight:700}
+.about .hl-red{color:var(--redstone);font-weight:700}
+.about .hl-cyan{color:var(--diamond);font-weight:700}
+
+.about-visual{
+  background:
+    radial-gradient(circle at 30% 30%,rgba(91,156,58,.22),transparent 60%),
+    radial-gradient(circle at 70% 70%,rgba(74,237,217,.15),transparent 60%),
+    var(--panel);
+  border:1px solid rgba(255,255,255,.08);border-radius:16px;
+  padding:40px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;min-height:340px;
+}
+.about-visual .big-icon{
+  font-size:5rem;
+  line-height:1;
+  margin-bottom:24px;
+  animation:float 4s ease-in-out infinite;
+  filter:drop-shadow(0 12px 24px rgba(0,0,0,.5));
+}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-14px)}
+}
+.about-visual .title{
+  font-family:'Press Start 2P',monospace;font-size:.72rem;color:var(--gold);
+  margin-bottom:14px;line-height:1.7;letter-spacing:1px;
+}
+.about-visual .text{font-size:.95rem;color:var(--muted);line-height:1.7}
+
+.design-wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:stretch}
+@media(max-width:1000px){.design-wrap{grid-template-columns:1fr}}
+.design-panel{
+  background:var(--panel);border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;padding:32px;position:relative;overflow:hidden;
+}
+.design-panel::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--grass),var(--gold),var(--diamond));
+}
+.design-panel h3{
+  font-family:'Press Start 2P',monospace;font-size:.75rem;color:var(--gold);
+  margin-bottom:8px;letter-spacing:1px;line-height:1.6;text-align:center;
+}
+.design-panel .panel-sub{
+  text-align:center;color:var(--muted);font-size:.8rem;
+  margin-bottom:22px;letter-spacing:1px;text-transform:uppercase;
+}
+
+.moodboard{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:500px){.moodboard{grid-template-columns:repeat(2,1fr)}}
+.mood-item{
+  aspect-ratio:1/1;border:2px solid rgba(0,0,0,.5);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;position:relative;
+  overflow:hidden;transition:transform .25s,box-shadow .25s;cursor:pointer;
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.2),inset 3px 3px 0 rgba(255,255,255,.12),0 6px 14px rgba(0,0,0,.3);
+}
+.mood-item:hover{
+  transform:scale(1.08) translateY(-3px);
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.2),inset 3px 3px 0 rgba(255,255,255,.12),0 12px 24px rgba(0,0,0,.45);
+  z-index:2;
+}
+.mood-item .label{
+  position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);
+  color:#fff;font-size:.6rem;padding:5px 4px;text-align:center;
+  letter-spacing:.5px;font-weight:500;text-transform:uppercase;
+}
+.mood-item.grass-bg{background:linear-gradient(135deg,#5b9c3a,#3d6b26)}
+.mood-item.dirt-bg{background:linear-gradient(135deg,#8b5a2b,#5c3a1a)}
+.mood-item.diamond-bg{background:linear-gradient(135deg,#4aedd9,#1a8a7a)}
+.mood-item.redstone-bg{background:linear-gradient(135deg,#ff3b3b,#8b0000)}
+.mood-item.stone-bg{background:linear-gradient(135deg,#7a7a7a,#3a3a3a)}
+.mood-item.gold-bg{background:linear-gradient(135deg,#ffd700,#b8860b)}
+.mood-item.nether-bg{background:linear-gradient(135deg,#8b1a1a,#4a0000)}
+.mood-item.end-bg{background:linear-gradient(135deg,#6a3d9a,#2a1a3a)}
+
+.palette{display:grid;grid-template-columns:1fr;gap:8px}
+.swatch{
+  display:flex;align-items:center;gap:14px;padding:8px 12px;
+  background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.06);
+  border-radius:10px;transition:all .2s;cursor:pointer;
+}
+.swatch:hover{transform:translateX(4px);border-color:rgba(255,215,0,.35);background:rgba(0,0,0,.4)}
+.swatch .chip{
+  width:34px;height:34px;border-radius:8px;border:2px solid rgba(0,0,0,.5);
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.25),inset 3px 3px 0 rgba(255,255,255,.18);flex-shrink:0;
+}
+.swatch .info{flex:1;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.swatch .info .name{font-size:.82rem;font-weight:600;color:var(--text);letter-spacing:.5px}
+.swatch .info .hex{font-size:.72rem;color:var(--muted);font-weight:400}
+
+.refboard{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+.ref-card{
+  background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:14px;
+  padding:26px;transition:all .25s;position:relative;overflow:hidden;
+}
+.ref-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--grass);transition:height .25s;
+}
+.ref-card.r1::before{background:var(--gold)}
+.ref-card.r2::before{background:var(--creeper)}
+.ref-card.r3::before{background:var(--diamond)}
+.ref-card.r4::before{background:var(--redstone)}
+.ref-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.15)}
+.ref-card:hover::before{height:5px}
+.ref-card .icon{margin-bottom:18px;display:block}
+.ref-card h4{
+  font-family:'Press Start 2P',monospace;font-size:.62rem;color:var(--gold);
+  margin-bottom:12px;line-height:1.7;letter-spacing:1px;
+}
+.ref-card p{font-size:.92rem;color:#b8c1cc;line-height:1.7}
+
+.rules-block{
+  background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:18px;
+  padding:44px 48px;position:relative;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);
+}
+.rules-block::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--grass),var(--gold),var(--creeper),var(--redstone));
+}
+@media(max-width:700px){.rules-block{padding:28px}}
+.rules-intro{
+  font-size:1.05rem;color:#c9d1d9;line-height:1.85;text-align:center;
+  max-width:760px;margin:0 auto 36px;padding-bottom:28px;
+  border-bottom:1px dashed rgba(255,255,255,.12);
+}
+.rules-intro strong{color:var(--gold)}
+.rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+.rule-box{
+  background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;padding:22px;transition:all .25s;
+}
+.rule-box:hover{border-color:rgba(255,215,0,.35);transform:translateY(-3px)}
+.rule-box h4{
+  font-family:'Press Start 2P',monospace;font-size:.65rem;color:var(--diamond);
+  margin-bottom:14px;letter-spacing:1px;line-height:1.7;
+}
+.rule-box p{font-size:.95rem;color:#b8c1cc;line-height:1.85}
+
+.events-mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:14px}
+.event-mini{
+  display:flex;align-items:center;gap:12px;padding:14px;
+  background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;transition:all .25s;
+}
+.event-mini:hover{border-color:rgba(255,215,0,.35);transform:translateX(3px)}
+.event-mini .emoji{font-size:1.6rem;flex-shrink:0;line-height:1}
+.event-mini .ic{transform:scale(.75)}
+.event-mini .txt{font-size:.88rem;color:#b8c1cc;line-height:1.5}
+.event-mini .txt strong{color:var(--text);display:block;margin-bottom:2px;font-size:.92rem}
+.event-mini.bad .txt strong{color:var(--redstone)}
+.event-mini.good .txt strong{color:var(--diamond)}
+.event-mini.check .txt strong{color:var(--gold)}
+
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+.member{
+  background:var(--panel);border:1px solid rgba(255,255,255,.07);border-radius:14px;
+  padding:32px 24px;text-align:center;transition:all .25s;
+}
+.member:hover{transform:translateY(-5px);border-color:rgba(255,215,0,.4);box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.member .avatar{
+  width:84px;height:84px;margin:0 auto 20px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;
+  border:2px solid rgba(0,0,0,.5);
+  box-shadow:inset -4px -4px 0 rgba(0,0,0,.3),inset 4px 4px 0 rgba(255,255,255,.2),0 8px 20px rgba(0,0,0,.35);
+}
+.member.a .avatar{background:var(--grass)}
+.member.b .avatar{background:var(--diamond)}
+.member.c .avatar{background:var(--gold)}
+.member .name{
+  font-family:'Press Start 2P',monospace;font-size:.7rem;color:var(--gold);
+  margin-bottom:8px;line-height:1.7;letter-spacing:1px;
+}
+.member .role{font-size:.88rem;color:var(--muted)}
+
+footer{
+  text-align:center;padding:50px 24px 40px;
+  border-top:1px solid rgba(255,255,255,.06);margin-top:60px;
+}
+footer .logo{
+  font-family:'Press Start 2P',monospace;font-size:.72rem;color:var(--gold);
+  margin-bottom:16px;letter-spacing:2px;
+}
+footer .logo span{color:var(--creeper)}
+footer p{color:var(--muted);font-size:.9rem;margin-bottom:8px}
+footer .authors{color:var(--text);font-weight:600;font-size:1rem;margin-top:16px}
+footer .heart{color:var(--redstone)}
+
+@media(max-width:700px){
+  section{padding:90px 20px 50px}
+  nav{padding:12px 16px}
+  .nav-logo{font-size:.58rem}
+  .nav-links a{font-size:.75rem;padding:6px 10px}
+  .fs-btn{width:36px;height:36px}
+}
+</style>
 </head>
 <body>
 
@@ -17,7 +569,7 @@
     <div class="nav-right">
       <ul class="nav-links">
         <li><a href="#about">Об игре</a></li>
-        <li><a href="#mechanics">События</a></li>
+        <li><a href="#design">Дизайн</a></li>
         <li><a href="#rules">Правила</a></li>
         <li><a href="#team">Команда</a></li>
       </ul>
@@ -85,35 +637,103 @@
   </div>
 </section>
 
-<section id="mechanics">
-  <h2 class="section-title">События на поле</h2>
-  <p class="section-sub">Что можно встретить по пути</p>
+<section id="design">
+  <h2 class="section-title">Дизайн-исследование</h2>
+  <p class="section-sub">Мудборд и палитра проекта</p>
 
-  <div class="mechanics">
-    <div class="mech creeper">
-      <span class="icon">💣</span>
-      <h3>Крипер</h3>
-      <p>Самое опасное событие. Взрыв - и ты сразу возвращаешься на старт.</p>
+  <div class="design-wrap">
+    <div class="design-panel">
+      <h3>МУДБОРД</h3>
+      <p class="panel-sub">Биомы и атмосфера</p>
+      <div class="moodboard">
+        <div class="mood-item grass-bg"><div class="ic ic-grass"></div><div class="label">Лес</div></div>
+        <div class="mood-item stone-bg"><div class="ic ic-stone"></div><div class="label">Пещера</div></div>
+        <div class="mood-item diamond-bg"><div class="ic ic-diamond"></div><div class="label">Алмазы</div></div>
+        <div class="mood-item redstone-bg"><div class="ic ic-redstone"></div><div class="label">Редстоун</div></div>
+        <div class="mood-item stone-bg"><div class="ic ic-stone"></div><div class="label">Камень</div></div>
+        <div class="mood-item gold-bg"><div class="ic ic-gold"></div><div class="label">Золото</div></div>
+        <div class="mood-item nether-bg"><div class="ic ic-nether"></div><div class="label">Нижний мир</div></div>
+        <div class="mood-item end-bg"><div class="ic ic-end"></div><div class="label">Край</div></div>
+      </div>
     </div>
-    <div class="mech zombie">
-      <span class="icon">🧟</span>
-      <h3>Зомби</h3>
-      <p>Хватает за ногу - отступаешь на 3 клетки назад.</p>
+
+    <div class="design-panel">
+      <h3>ПАЛИТРА</h3>
+      <p class="panel-sub">Цвета из текстур</p>
+      <div class="palette">
+        <div class="swatch">
+          <div class="chip" style="background:#5b9c3a;"></div>
+          <div class="info"><span class="name">Трава</span><span class="hex">#5B9C3A</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#8b5a2b;"></div>
+          <div class="info"><span class="name">Земля</span><span class="hex">#8B5A2B</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#7a7a7a;"></div>
+          <div class="info"><span class="name">Камень</span><span class="hex">#7A7A7A</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#4aedd9;"></div>
+          <div class="info"><span class="name">Алмаз</span><span class="hex">#4AEDD9</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#ffd700;"></div>
+          <div class="info"><span class="name">Золото</span><span class="hex">#FFD700</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#ff3b3b;"></div>
+          <div class="info"><span class="name">Редстоун</span><span class="hex">#FF3B3B</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#4caf50;"></div>
+          <div class="info"><span class="name">Крипер</span><span class="hex">#4CAF50</span></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#1a1a1a;"></div>
+          <div class="info"><span class="name">Ночь</span><span class="hex">#1A1A1A</span></div>
+        </div>
+      </div>
     </div>
-    <div class="mech skeleton">
-      <span class="icon">💀</span>
-      <h3>Скелет</h3>
-      <p>Стреляет из лука - отпрыгиваешь на 2 клетки назад.</p>
+  </div>
+</section>
+
+<section id="refboard">
+  <h2 class="section-title">Рефборг</h2>
+  <p class="section-sub">Источники вдохновения</p>
+
+  <div class="refboard">
+    <div class="ref-card r1">
+      <span class="icon ic ic-mono"></span>
+      <h4>Классическая Монополия</h4>
+      <p>
+        Основа механики - бросок кубика, движение по кругу, экономическая
+        конкуренция. Проверенная временем формула, которую мы взяли за каркас.
+      </p>
     </div>
-    <div class="mech horse">
-      <span class="icon">🐴</span>
-      <h3>Лошадь</h3>
-      <p>Садишься верхом и скачешь вперёд на 2 клетки.</p>
+    <div class="ref-card r2">
+      <span class="icon ic ic-minecraft"></span>
+      <h4>Minecraft</h4>
+      <p>
+        Визуальный стиль: пиксель-арт, текстуры блоков, биомы, мобы,
+        атмосфера выживания. Вселенная, знакомая миллионам игроков.
+      </p>
     </div>
-    <div class="mech village">
-      <span class="icon">🏘️</span>
-      <h3>Деревня</h3>
-      <p>Чекпоинт - безопасное место. Если проиграешь, вернёшься сюда, а не на старт.</p>
+    <div class="ref-card r3">
+      <span class="icon ic ic-board"></span>
+      <h4>Настолки-бродилки</h4>
+      <p>
+        «Гуси-лебеди», «Ходилки» и семейные игры-путешествия. Простые правила,
+        кубик, двигающиеся фишки - всё, что знакомо с детства.
+      </p>
+    </div>
+    <div class="ref-card r4">
+      <span class="icon ic ic-pixel"></span>
+      <h4>Пиксельная графика</h4>
+      <p>
+        8-битные игры и современные пиксельные инди-проекты. Стиль,
+        который вызывает ностальгию и отлично смотрится на поле.
+      </p>
     </div>
   </div>
 </section>
@@ -144,15 +764,15 @@
         <p>Монстры отбрасывают игрока назад:</p>
         <div class="events-mini">
           <div class="event-mini bad">
-            <span class="emoji">💣</span>
+            <span class="ic ic-creeper"></span>
             <div class="txt"><strong>Крипер</strong>На старт</div>
           </div>
           <div class="event-mini bad">
-            <span class="emoji">🧟</span>
+            <span class="ic ic-zombie"></span>
             <div class="txt"><strong>Зомби</strong>-3 клетки</div>
           </div>
           <div class="event-mini bad">
-            <span class="emoji">💀</span>
+            <span class="ic ic-skeleton"></span>
             <div class="txt"><strong>Скелет</strong>-2 клетки</div>
           </div>
         </div>
@@ -216,7 +836,7 @@
     </div>
     <div class="member c">
       <div class="avatar">⚙️</div>
-      <div class="name">ДОТОВИЧ<br>ВИКТОР</div>
+      <div class="name">ВИКТОР<br>САПАРГАЛИЕВ</div>
       <div class="role">Разработчик проекта</div>
     </div>
   </div>
@@ -225,11 +845,20 @@
 <footer>
   <div class="logo">МАЙНКРАФТ <span>МОНОПОЛИЯ</span></div>
   <p>Настольная игра-бродилка в мире кубов</p>
-  <p class="authors">Дячук Александр · Кузьменко Никита · Дотович Виктор</p>
+  <p class="authors">Дячук Александр · Кузьменко Никита · Виктор Сапаргалиев</p>
   <p style="margin-top:24px;font-size:.8rem;color:#555;">© 2026 · Сделано с <span class="heart">❤</span> для защиты проекта</p>
 </footer>
 
-<script src="js/script.js"></script>
+<script>
+const fsBtn = document.getElementById('fsBtn');
+fsBtn.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+});
+</script>
 
 </body>
 </html>
